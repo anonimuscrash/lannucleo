@@ -1,0 +1,460 @@
+<section class="capa">
+  <p class="sobre">Site · nucleobot.com.br</p>
+  <h1>Land da Núcleo</h1>
+  <p class="sub">Manual de continuidade · edição de 28/10/2026</p>
+  <p class="intro">Para quem vai mexer na landing page sem ter acompanhado as conversas anteriores. Explica como o site é feito, onde fica cada coisa, o visual aprovado, o que cada texto precisa respeitar, como testar, as armadilhas que já custaram tempo e o que falta. No fim, traz o prompt completo para colar num chat novo.</p>
+  <div class="capa-rodape">
+    <p>Site estático em Nginx · publicado pelo Coolify · links só para app.nucleobot.com.br</p>
+    <p>Conferido contra o zip <b>lannucleo-28-10-v3</b> (com as 13 correções de 28/10) e o código da plataforma <b>nucleo-27-10-plano</b> (promessas conferidas em 27/10/2026)</p>
+    <p>Complementa o GUIA-DA-LAND.md (que vai dentro do zip)</p>
+  </div>
+</section>
+
+<section class="quebra">
+  <h2 class="sumario-titulo">Sumário</h2>
+  <ol class="sumario">
+    <li>Como usar este manual</li>
+    <li>O que é a land (e o que ela não é)</li>
+    <li>Como trabalhar neste projeto (o acordo)</li>
+    <li>Arquivos e pastas</li>
+    <li>Como o index.html está organizado</li>
+    <li>As seções, de cima para baixo</li>
+    <li>O visual aprovado e a arte espacial</li>
+    <li>Tema claro e escuro</li>
+    <li>Partes que se mexem</li>
+    <li>Promessas que precisam bater com a plataforma</li>
+    <li>Demonstrações e "em breve"</li>
+    <li>Regras para não quebrar</li>
+    <li>Testes</li>
+    <li>Publicar e voltar atrás</li>
+    <li>Armadilhas já pagas</li>
+    <li>Receitas para as mudanças mais comuns</li>
+    <li>Estado atual e o que falta</li>
+    <li>Histórico</li>
+    <li>Os primeiros 30 minutos de quem assume</li>
+  </ol>
+  <p class="anexos">Anexo A — Prompt completo para o chat novo</p>
+</section>
+
+<section class="quebra">
+  <p class="parte">Parte 1</p>
+  <h2>Como usar este manual</h2>
+  <p>O <code>GUIA-DA-LAND.md</code>, dentro do zip, é a versão curta: seções, promessas, regras e histórico. Este manual explica o porquê de cada coisa e traz o que o guia não cabe: a organização interna do arquivo, a arte, os testes, as armadilhas e as receitas.</p>
+  <ol>
+    <li>Partes 2 e 3 — leia inteiras.</li>
+    <li>Partes 4 a 9 — use como mapa quando for mexer.</li>
+    <li>Partes 10 a 12 — leia antes de escrever qualquer texto na página.</li>
+    <li>Partes 13 a 15 — leia antes de entregar.</li>
+    <li>Parte 19 e o Anexo A — o que colar no primeiro dia de um chat novo.</li>
+  </ol>
+  <div class="caixa regra"><b>Regra da casa · a que resume todas as outras</b><p>Nunca afirme que algo funciona sem ter rodado. A land tem 53 testes de clique e uma varredura de 24 combinações de tamanho e tema justamente para ninguém precisar acreditar em palavra. Se você não rodou, diga que não rodou. E nunca escreva na página algo que a plataforma não faz.</p></div>
+</section>
+
+<section class="quebra">
+  <p class="parte">Parte 2</p>
+  <h2>O que é a land (e o que ela não é)</h2>
+  <p>A land é a página de apresentação da Núcleo Bot. Ela explica a plataforma para quem ainda não tem conta e leva para o cadastro. É <b>outro projeto</b>, num repositório Git próprio, separado do painel e da API.</p>
+  <table>
+    <tr><th>Item</th><th>Como é</th></tr>
+    <tr><td>Endereço</td><td>https://nucleobot.com.br/ (a prévia do link no WhatsApp/Telegram foi feita para esse endereço)</td></tr>
+    <tr><td>O que tem</td><td>Um arquivo HTML com estilo e scripts dentro, imagens e a fonte. Sem banco, sem login, sem formulário, sem variável de ambiente, sem framework, sem build.</td></tr>
+    <tr><td>Onde roda</td><td>Container Docker com Nginx, publicado pelo Coolify (Dockerfile, porta 80, <code>/health</code> responde "ok").</td></tr>
+    <tr><td>Ligação com a plataforma</td><td>Só links: "Criar conta" → <code>app.nucleobot.com.br/cadastro</code>, "Entrar" → <code>/entrar</code>, "Termos de uso" → <code>/termos</code>. A land não conversa com a API.</td></tr>
+    <tr><td>Independência</td><td>Publicar a land não mexe no painel nem nos bots, e o contrário também vale. Voltar atrás é sempre seguro: a land não guarda dado nenhum.</td></tr>
+  </table>
+  <div class="caixa atencao"><b>Atenção · a land fala DE funções da plataforma</b><p>Ela não depende da API para funcionar, mas promete o que a plataforma faz. A versão de 27/10 (e a de 28/10, que só corrigiu visual e texto) fala de Checkout PIX, UTMify, bot de suporte, limpeza programada e planos em dias, que só entram no ar com as migrações 0050/0051 da plataforma. <b>Publique a land só depois da plataforma.</b></p></div>
+</section>
+
+<section class="quebra">
+  <p class="parte">Parte 3</p>
+  <h2>Como trabalhar neste projeto</h2>
+  <h3>Com o dono</h3>
+  <ul>
+    <li>Ele não é programador: português simples, sem jargão, dizendo o que vai fazer e por quê.</li>
+    <li>Pedido que mexe em preço, taxa, limites, gateways ou no que a plataforma faz: confira no código da plataforma (ele manda o zip). Se não der para conferir, pergunte.</li>
+    <li>Decisão de texto comercial (grátis, desconto, prazo, prêmios): pergunte com opções.</li>
+  </ul>
+  <h3>Nada é entregue sem teste</h3>
+  <ul>
+    <li>Rode <code>matriz.mjs</code> (24 de 24) e <code>interacao.mjs</code> (53 de 53, duas vezes). Parte 13.</li>
+    <li>Olhe as capturas de verdade: computador e celular, escuro e claro. Os testes pegam o que é mensurável; o olho pega o que está feio.</li>
+    <li>Se um teste falhar, investigue se o defeito é da página ou do teste. Não ajuste o teste só para passar. Correção de defeito: prove que o teste reprova sem a correção.</li>
+    <li>Coisa nova que se mexe (botão, aba, demonstração) entra com teste novo no <code>interacao.mjs</code>.</li>
+  </ul>
+  <h3>No fim de cada entrega</h3>
+  <ul>
+    <li>Imagens do antes e do depois (computador e celular).</li>
+    <li>Zip novo da land, sem o <code>.git</code> (o <code>git archive</code> já faz isso).</li>
+    <li><code>README.md</code> e <code>GUIA-DA-LAND.md</code> atualizados, com uma linha nova no "Histórico"; este manual e o prompt atualizados se algo mudou.</li>
+    <li>Um relatório curto: o que mudou, o que é demonstração, o que foi testado e o que ficou pendente.</li>
+  </ul>
+  <h3>O que não fazer sem o dono pedir</h3>
+  <p>Publicar, trocar domínio, colocar script de rastreio (pixel, Google Analytics), fonte do Google ou qualquer serviço de fora: eles envolvem dados de quem visita (LGPD).</p>
+</section>
+
+<section class="quebra">
+  <p class="parte">Parte 4</p>
+  <h2>Arquivos e pastas</h2>
+<pre>lannucleo-main/
+  public/
+    index.html               a página inteira (~200 KB: texto, estilo e scripts)
+    assets/                  60 arquivos, ~1,8 MB
+      fonts/inter.woff2      fonte Inter local + LICENSE-Inter.txt (OFL)
+      espaco-*.webp/.png     arte espacial (Parte 7)
+      premio-*-560/1000      fotos dos prêmios
+      *-real.webp            capturas do painel (conta de demonstração)
+      marca-produto-*.webp   antes/depois da marca d'água (foto de produto, Parte 7)
+      rede-*.png, logo-*.png ícones das redes e das integrações
+      compartilhar.png       prévia do link (1200 x 630)
+  ferramentas/
+    arte.py                  gera a arte espacial (Python + numpy + Pillow + scipy)
+    produto.py               gera a foto de produto da marca d'água (Mitsuba 3, por código)
+    marca_produto.py         aplica a logo e o texto na foto (antes/depois)
+    testes/                  matriz.mjs, interacao.mjs, foto.mjs, secao.mjs, LEIA-ME.md
+  docs/                      este manual (PDF e fonte) e o prompt
+  nginx.conf                 /health, compressão, cabeçalhos de segurança, cache de 30 dias em /assets/
+  Dockerfile                 nginx:alpine; copia só nginx.conf e public/
+  docker-compose.yml         para rodar igual ao Coolify
+  GUIA-DA-LAND.md            a versão curta deste manual
+  README.md                  como publicar e a lista de mudanças
+  subir-projeto.command      script do Mac para enviar a pasta ao GitHub</pre>
+  <p>Só a pasta <code>public</code> vai para dentro do container. <code>ferramentas</code> e <code>docs</code> ficam no repositório para quem mexe, mas não são publicadas.</p>
+  <h3>Imagens que importam</h3>
+  <table>
+    <tr><th>Arquivo</th><th>Onde aparece</th></tr>
+    <tr><td><code>espaco-ceu-1920/960.webp</code>, <code>espaco-ceu-celular-900.webp</code></td><td>céu do topo (o de celular é em pé, para não esticar)</td></tr>
+    <tr><td><code>espaco-planeta-1100/640.webp</code></td><td>planeta do topo (640 no celular) e do centro do Universo</td></tr>
+    <tr><td><code>espaco-rochas-1920/960.webp</code>, <code>espaco-pedra-1/2/3.webp</code></td><td>chão do topo e dos prêmios; pedras soltas do topo (escondidas no celular)</td></tr>
+    <tr><td><code>espaco-ceu-limbo-*.webp</code>, <code>espaco-borda-*.webp</code></td><td>céu com borda de planeta (Premiação) e borda de planeta (Checkout)</td></tr>
+    <tr><td><code>espaco-orbe-1..5.webp</code>, <code>espaco-estrelas.png</code></td><td>ícones da faixa de fatos; estrelas no fundo das seções escuras</td></tr>
+    <tr><td><code>dashboard-real.webp</code></td><td>painel do topo e vitrine (com tarjas <code>shot-mask</code> cobrindo nome e aviso)</td></tr>
+    <tr><td><code>checkout-editor-real.webp</code>, <code>paginas-editor-real.webp</code>, <code>pagina-celular-real.webp</code>, <code>ferramentas-midias-real.webp</code></td><td>capturas reais tiradas numa conta de demonstração ("Conta de Teste", página "Estúdio Órbita")</td></tr>
+    <tr><td><code>marca-produto-antes/logo/texto-1200/720.webp</code></td><td>antes/depois da marca d'água: a <b>mesma foto</b> nos três; só muda a marca (logo da loja fictícia "órbita" ou "@sualoja")</td></tr>
+    <tr><td><code>fluxo-pagamentos-real.webp</code></td><td>editor de fluxos (tema claro do painel); a página mostra um recorte e cobre o nome do fluxo com a tarja "Fluxo de exemplo"</td></tr>
+    <tr><td><code>logo-nucleo.webp</code> / <code>logo-nucleo-claro.webp</code></td><td>logo nos temas escuro e claro</td></tr>
+    <tr><td><code>nucleo-core.webp</code>, <code>nucleo-mascot.webp</code></td><td>não usadas (da versão anterior)</td></tr>
+  </table>
+</section>
+
+<section class="quebra">
+  <p class="parte">Parte 5</p>
+  <h2>Como o index.html está organizado</h2>
+  <p>Um arquivo só, em blocos. Procure pelos marcadores de comentário para achar cada parte.</p>
+  <table>
+    <tr><th>Bloco</th><th>O que tem</th></tr>
+    <tr><td><code>&lt;head&gt;</code></td><td>título, descrição, prévia do link (<code>og:</code>), ícones, e um script curtinho que aplica o tema salvo <b>antes</b> de a página aparecer (sem piscar).</td></tr>
+    <tr><td><code>&lt;style&gt;</code> 1 · original</td><td>variáveis de cor em <code>:root</code>, cabeçalho, topo, seções da versão de setembro e as faixas de tamanho (1050, 860, 620 px).</td></tr>
+    <tr><td><code>&lt;style&gt;</code> 2 · "27/10/2026 — Seções novas e tema claro"</td><td>tema claro (<code>html[data-tema="claro"]</code>), Universo, Checkout, Páginas, Marca d'água, Mídias, Premiação, Novidades, perguntas por abas, Suporte; faixas 1050 e 760 px; menos movimento.</td></tr>
+    <tr><td><code>&lt;style&gt;</code> 3 · "27/10/2026 (v2): visual espacial"</td><td><code>escuro-sempre</code>, topo espacial (<code>cz-*</code>), Premiação em palco (<code>pr-*</code>), cartões ilustrados (<code>so-*</code>, <code>solucoes</code>), Checkout no celular (<code>cp-*</code>), estrelas nas seções escuras.</td></tr>
+    <tr><td><code>&lt;style&gt;</code> 4 · "28/10/2026 (v3): 13 correções"</td><td>faixa de fatos no celular, celular do Telegram (<code>tgx-*</code>, <code>tm-*</code>), vitrine com abas em linha (<code>vx</code>), editor de fluxos (<code>bx-*</code>), Checkout com página de compra (<code>ck-*</code>), celular das Páginas (<code>pgx-*</code>), opções da marca d'água (<code>mx-*</code>).</td></tr>
+    <tr><td><code>&lt;body&gt;</code></td><td>cabeçalho, 17 seções (Parte 6) e rodapé.</td></tr>
+    <tr><td><code>&lt;script&gt;</code> 1 · original</td><td>aparecer ao rolar (<code>.reveal</code>), menu do celular, vitrine (<code>showcaseData</code>), conversa do Telegram (<code>pausas</code>, <code>alturas</code>), perguntas, ano do rodapé.</td></tr>
+    <tr><td><code>&lt;script&gt;</code> 2 · "27/10/2026: partes novas"</td><td>tema, Universo (<code>universo</code>), demonstração do PIX, antes/depois, baixar mídias, setas dos prêmios, abas das perguntas, assistente (<code>respostas</code>). <b>Nada aqui chama servidor nenhum.</b></td></tr>
+  </table>
+  <div class="caixa regra"><b>Regra da casa · onde pôr o que é novo</b><p>Estilo novo vai no fim do último bloco (ou num bloco novo com data no comentário), com classe própria. Script novo vai no fim do segundo script. Não espalhe mudanças pelos blocos antigos sem necessidade: fica difícil saber o que mudou em cada entrega.</p></div>
+  <p>Variáveis de cor (escuro): <code>--black #000</code>, <code>--surface #0a0a0a</code>, <code>--raised</code>, <code>--line</code>, <code>--line-strong</code>, <code>--white #f7f7f7</code>, <code>--muted</code>, <code>--muted-2</code>, <code>--purple #8f00ff</code>, <code>--purple-soft #bb77ff</code>, <code>--purple-dark</code>, <code>--green</code>. O tema claro troca só os valores, com os mesmos nomes. Largura do conteúdo: <code>--content 1180px</code>.</p>
+</section>
+
+<section class="quebra">
+  <p class="parte">Parte 6</p>
+  <h2>As seções, de cima para baixo</h2>
+  <table>
+    <tr><th>#</th><th>Seção (classe · id)</th><th>O que mostra</th></tr>
+    <tr><td>1</td><td><code>site-header</code></td><td>Logo, menu na ordem da página (Plataforma, Premiação, No Telegram, Checkout, Páginas, Ferramentas, Preço, Dúvidas), botão de tema, Entrar, Criar conta. No celular: botão de tema + três riscos.</td></tr>
+    <tr><td>2</td><td><code>hero cosmos</code> · <code>#inicio</code></td><td>Título sem microfrase em cima, céu, planeta com anéis, 6 cartões com as funções (<code>cz-chips</code>), painel real inclinado e faixa de fatos (<code>cz-fatos</code>: 20 bots, Só PIX "direto no seu gateway", R$ 0,75, Entrega, Aviso). No celular a faixa vira uma lista num quadro só. Sempre escuro.</td></tr>
+    <tr><td>3</td><td><code>universo</code> · <code>#universo</code></td><td>"Seis frentes, um só painel": órbitas clicáveis com o planeta no centro; no celular viram abas.</td></tr>
+    <tr><td>4</td><td><code>premiacao</code> · <code>#premiacao</code></td><td>Prêmios em escadinha sobre chão rochoso (carrossel no celular); regras "em breve". Sempre escura. Desde 28/10 é a 3ª seção.</td></tr>
+    <tr><td>5</td><td><code>chat-section</code> · <code>#no-telegram</code></td><td>Celular com a conversa do Telegram (8 mensagens animadas) e o aviso "PIX pago".</td></tr>
+    <tr><td>6</td><td><code>product</code> · <code>#produto</code></td><td>Vitrine de telas: 4 abas em linha em cima (Visão geral, Conversas, Remarketing, Checkout) e a tela larga embaixo.</td></tr>
+    <tr><td>7</td><td><code>builder</code></td><td>Título, três itens e o botão em cima; captura larga do editor de fluxos numa janela escura embaixo.</td></tr>
+    <tr><td>8</td><td><code>checkout-pix</code> · <code>#checkout-pix</code></td><td>O que o Checkout faz + simulação de compra num celular, no formato da página de compra real. Sempre escura.</td></tr>
+    <tr><td>9</td><td><code>paginas</code> · <code>#paginas</code></td><td>Editor real de Páginas + página num celular com moldura de aparelho + quatro itens.</td></tr>
+    <tr><td>10</td><td><code>marca</code> · <code>#ferramentas</code></td><td>Marca d'água: antes/depois arrastável numa foto de produto (logo ou texto) e as opções reais em blocos curtos.</td></tr>
+    <tr><td>11</td><td><code>midias</code> · <code>#baixar-midias</code></td><td>Redes aceitas, limites, demonstração das etapas e a tela real.</td></tr>
+    <tr><td>12</td><td><code>modules</code> · <code>#recursos</code></td><td>"Muito mais que um bot": os 6 cartões ilustrados (<code>solucoes</code>). A grade de 12 recursos saiu em 28/10.</td></tr>
+    <tr><td>13</td><td><code>integrations</code> · <code>#integracoes</code></td><td>Telegram, Dotfy, SyncPay, Meta, TikTok, UTMify.</td></tr>
+    <tr><td>14</td><td><code>pricing</code> · <code>#preco</code></td><td>R$ 0,75 por venda, exemplo de R$ 29,90, nota do SyncPay e das Ferramentas.</td></tr>
+    <tr><td>15</td><td><code>novidades</code> · <code>#novidades</code></td><td>O que mudou (com datas) e "No forno" (Área de membros em desenvolvimento, Suporte inteligente em breve).</td></tr>
+    <tr><td>16</td><td><code>faq</code> · <code>#faq</code></td><td>Perguntas com abas: Todas, Como funciona, Pagamentos, Ferramentas, Segurança.</td></tr>
+    <tr><td>17</td><td><code>suporte-ia</code> · <code>#suporte</code></td><td>"Você não precisa configurar tudo sozinho": assistente em breve, com conversa de exemplo.</td></tr>
+    <tr><td>18</td><td><code>final-cta</code> · <code>#acesso</code></td><td>Quadro final com "Criar minha conta" e "Já tenho conta · Entrar".</td></tr>
+    <tr><td>19</td><td><code>site-footer</code></td><td>Logo, links e o ano (preenchido pelo script).</td></tr>
+  </table>
+  <p>Saíram em 28/10: a seção de etapas (<code>#como-funciona</code>), a faixa de números (<code>.numbers</code>) e a grade de 12 recursos (<code>#recursos-lista</code>), com o estilo e os links de cada uma. Para mudar a ordem, recorte o <code>&lt;section&gt;</code> inteiro e cole em outro ponto; o estilo não depende da posição. Confira se duas seções com o mesmo fundo não ficaram coladas, e atualize o menu se o <code>id</code> mudou.</p>
+</section>
+
+<section class="quebra">
+  <p class="parte">Parte 7</p>
+  <h2>O visual aprovado e a arte espacial</h2>
+  <p>O dono aprovou um visual <b>espacial, escuro e roxo</b>, com planeta, anéis inclinados como o logo, estrelas, chão rochoso e os prêmios em destaque. A referência está no PDF "Núcleo — Refinamento anti-IA". A referência é direção artística, não dado: os números, logos de parceiros, cartão, boleto e países que aparecem nela <b>não</b> vão para a página.</p>
+  <h3>Como a arte foi feita</h3>
+  <p>O dono pediu arte gerada por IA (Higgsfield), mas a conta está no plano gratuito, que não libera geração de imagem. A arte foi então <b>renderizada por código</b> em <code>ferramentas/arte.py</code> (numpy + Pillow + scipy), em camadas separadas, o que permite montar o topo pelo CSS e adaptar ao celular:</p>
+  <table>
+    <tr><th>Camada</th><th>Comando</th><th>Saída</th></tr>
+    <tr><td>céu (sem planeta de borda)</td><td><code>python3 ferramentas/arte.py saida ceu</code></td><td><code>espaco-ceu.png</code> 2560×1300</td></tr>
+    <tr><td>céu do celular</td><td><code>… ceu-celular</code></td><td><code>espaco-ceu-celular.png</code> 1080×2340</td></tr>
+    <tr><td>céu com borda de planeta</td><td><code>… ceu2</code></td><td><code>espaco-ceu-limbo.png</code></td></tr>
+    <tr><td>planeta com anéis (transparente)</td><td><code>… planeta</code></td><td><code>espaco-planeta.png</code> 1600×1600</td></tr>
+    <tr><td>chão rochoso e pedras</td><td><code>… rochas pedras</code></td><td><code>espaco-rochas.png</code>, <code>espaco-pedra-1..3.png</code></td></tr>
+    <tr><td>borda de planeta e ícones</td><td><code>… borda orbes</code></td><td><code>espaco-borda.png</code>, <code>espaco-orbe-1..5.png</code></td></tr>
+  </table>
+  <p>O resultado sai em PNG grande; a página usa WebP em dois tamanhos (computador e celular), convertidos com o Pillow (qualidade ~80, <code>method=6</code>). A semente aleatória é fixa: rodar de novo gera a mesma arte. Leva cerca de 2 minutos.</p>
+  <div class="caixa atencao"><b>Se um dia trocar a arte</b><p>Gere com nome novo (ex.: <code>espaco-planeta-2-1100.webp</code>) e troque no HTML — o Nginx guarda <code>/assets/</code> por 30 dias. Mantenha o planeta com fundo transparente e os anéis inteiros dentro do quadro. Se usar o Higgsfield (plano pago), peça sem texto, sem logos e sem pessoas, e confira que nada na imagem sugere cartão, boleto ou números.</p></div>
+  <h3>A foto de produto da marca d'água (28/10)</h3>
+  <p>A demonstração da marca d'água usa uma foto de produto de e-commerce: um frasco de sérum e um pote de creme de uma loja inventada, "órbita" (o mesmo nome da conta de demonstração das capturas). Ela foi <b>renderizada por código</b> em <code>ferramentas/produto.py</code> (Mitsuba 3, uma cena de estúdio), porque daqui não dá para baixar fotos de bancos de imagem e assim a imagem é nossa, sem dúvida de licença. <code>ferramentas/marca_produto.py</code> aplica a logo da loja e o texto "@sualoja" na <b>mesma</b> foto, imitando as opções da ferramenta (posição, tamanho, opacidade, margem, contorno). Não é a função da plataforma: é uma ilustração, e a legenda diz isso.</p>
+<pre>pip install mitsuba numpy pillow fonttools brotli
+python3 ferramentas/produto.py foto.png             # 1800 x 1200, cerca de 7 minutos
+python3 ferramentas/marca_produto.py foto.png public/assets</pre>
+  <p>Se trocar a foto, use nomes novos (ex.: <code>marca-produto-2-antes-1200.webp</code>) e troque no HTML e no script da marca d'água.</p>
+  <h3>Como o topo é montado</h3>
+  <ul>
+    <li><code>.cz-fundo</code>: céu (<code>&lt;picture&gt;</code>: em pé no celular) + chão rochoso + gradiente escurecendo à esquerda para o texto ler bem.</li>
+    <li><code>.cz-palco</code>: quadro com proporção fixa; planeta, pedras, os 6 cartões (<code>.cz-chips</code>, posições em %) e o painel inclinado (<code>.cz-tela</code>). No celular os cartões e as pedras somem, o planeta fica maior e o painel entra no fluxo normal da página.</li>
+    <li><code>.cz-fatos</code>: 5 itens com os ícones de planeta; 3 colunas no tablet; no celular, um quadro só com os 5 em lista (2 colunas entre 481 e 760 px), sem setas.</li>
+  </ul>
+</section>
+
+<section class="quebra">
+  <p class="parte">Parte 8</p>
+  <h2>Tema claro e escuro</h2>
+  <ul>
+    <li>Botão <code>#tema-botao</code> (sol/lua) no topo; no celular fica ao lado do menu.</li>
+    <li>O script do <code>&lt;head&gt;</code> lê <code>localStorage["nucleo-land-tema"]</code> e põe <code>data-tema="claro"</code> no <code>&lt;html&gt;</code> antes de pintar a página. Sem escolha salva, a página abre escura.</li>
+    <li>As cores do claro ficam no bloco <code>html[data-tema="claro"] { … }</code> e em regras <code>html[data-tema="claro"] .classe</code> logo abaixo.</li>
+    <li><b>Ilhas escuras:</b> a classe <code>escuro-sempre</code> redefine as variáveis com os valores escuros. Está no topo, na Premiação e no Checkout: elas ficam escuras nos dois temas, de propósito. Os celulares do Telegram, do Checkout e das Páginas também ficam escuros nos dois temas (são telas de aparelho).</li>
+    <li>As estrelas e o brilho roxo no fundo das seções aparecem só no tema escuro.</li>
+  </ul>
+  <div class="caixa paga"><b>Armadilha já paga · cor fixa no CSS</b><p>Em 27/10 os cartões de Recursos, o quadro de preço, o quadro final e o cartão "Operação ativa" ficaram com texto ilegível no tema claro, porque usavam cores fixas (<code>#0d0d0d</code>, <code>#d7b6f2</code>…). Toda cor nova: variável, ou regra do tema claro junto.</p></div>
+</section>
+
+<section class="quebra">
+  <p class="parte">Parte 9</p>
+  <h2>Partes que se mexem</h2>
+  <table>
+    <tr><th>Parte</th><th>Como funciona</th></tr>
+    <tr><td>Aparecer ao rolar</td><td>Todo bloco com <code>.reveal</code> surge quando entra na tela. Quem pediu menos movimento vê tudo parado. <b>Em captura de tela, role a página antes</b>, senão os blocos ficam invisíveis.</td></tr>
+    <tr><td>Menu</td><td>Abaixo de 860 px vira o botão de três riscos e abre <code>.nav-links</code> em tela cheia. Entre 861 e 1320 px, os links com <code>hide-md</code> (Plataforma, Páginas, Premiação) somem para caber numa linha.</td></tr>
+    <tr><td>Universo</td><td>Botões com <code>data-u</code>; os textos de cada órbita ficam no objeto <code>universo</code> (título, texto, link, rótulo do link).</td></tr>
+    <tr><td>Vitrine de telas</td><td>Cada aba é um <code>button.showcase-tab[data-showcase]</code>; o objeto <code>showcaseData</code> guarda imagem, endereço, título e descrição. As abas ficam numa linha em cima (2 por linha abaixo de 860 px) e só elas ficam dentro da lista de abas; o painel <code>#showcase-painel</code> guarda o título, o texto e a tela, e aponta para a aba ativa (<code>aria-labelledby</code>). Somou aba? Mexa nos dois lugares e no <code>grid-template-columns</code> de <code>.vx .showcase-tabs</code>.</td></tr>
+    <tr><td>Conversa do Telegram</td><td>Cada filho de <code>#tg-chat</code> aparece na ordem (hoje 8: /start, foto, áudio, planos, order bump, "Aguarde", PIX, aprovado); o tempo de cada um está em <code>pausas</code>, uma por mensagem. Mensagem e botões do mesmo envio ficam juntos num <code>.tm-grupo</code>. Só roda com o celular na tela.</td></tr>
+    <tr><td>Demonstração do PIX</td><td>A escolha do produto de exemplo fica acima do celular (<code>.demo-produto</code>) e muda nome, preço e texto em todas as etapas (<code>.ck-nome</code>, <code>.ck-preco</code>). 3 etapas (<code>data-etapa</code>): Seus dados (como a página de compra real) → Pague com PIX (QR apagado com "DEMONSTRAÇÃO", sem código) → Pagamento aprovado (simulado) e pedido no "painel". O cartão "Pagamento aprovado · simulação" (<code>.cp-flutua</code>) só aparece na etapa 3 (<code>.cp-palco[data-etapa="3"]</code>).</td></tr>
+    <tr><td>Antes/depois da marca d'água</td><td>Um <code>input type="range"</code> invisível por cima (dedo, mouse e setas do teclado) muda <code>--corte</code>; os botões Logo/Texto trocam a imagem do "depois" (<code>marca-produto-logo</code> / <code>marca-produto-texto</code>).</td></tr>
+    <tr><td>Baixar mídias</td><td>Etapas de exemplo com tempos fixos (sem espera com menos movimento); o "Baixar ZIP" não baixa nada.</td></tr>
+    <tr><td>Premiação</td><td>Computador: escadinha. Celular: carrossel com setas (<code>data-pr</code>).</td></tr>
+    <tr><td>Perguntas</td><td>Abas com <code>data-faq</code>; cada <code>article.faq-item</code> tem o seu assunto. Uma aberta por vez.</td></tr>
+    <tr><td>Assistente</td><td>Sugestões com <code>data-ia</code>; respostas de exemplo no objeto <code>respostas</code>, escritas a partir das telas reais do painel.</td></tr>
+    <tr><td>Planeta do topo</td><td>Flutua devagar (<code>cz-flutua</code>); com menos movimento fica parado.</td></tr>
+  </table>
+</section>
+
+<section class="quebra">
+  <p class="parte">Parte 10</p>
+  <h2>Promessas que precisam bater com a plataforma</h2>
+  <p>Conferido no código da plataforma (<code>nucleo-27-10-plano</code>) em 27/10/2026. Se a plataforma mudar, a land muda junto.</p>
+  <table>
+    <tr><th>Informação</th><th>Valor hoje</th><th>De onde vem no sistema</th></tr>
+    <tr><td>Taxa da Núcleo</td><td>R$ 0,75 por venda aprovada (bot, Checkout e Páginas), sem mensalidade</td><td><code>tenants.platform_fee_fixed_cents</code></td></tr>
+    <tr><td>Taxa no SyncPay</td><td>% inteira mais perto de R$ 0,75, mínimo 1% (R$ 29,90 → 3% = R$ 0,90)</td><td><code>integrations/syncpay.ts</code></td></tr>
+    <tr><td>Bots por conta / por fluxo / planos por fluxo</td><td>20 / 10 / 10</td><td><code>tenants.max_bots</code>, <code>MAX_BOTS_PER_FLOW</code>, <code>MAX_PLANS_PER_FLOW</code></td></tr>
+    <tr><td>Pagamento</td><td>Só PIX, na Dotfy ou no SyncPay do player; o dinheiro não passa pela Núcleo</td><td><code>modules/gateways</code></td></tr>
+    <tr><td>Planos</td><td>Por mês, ano ou em dias (15 ou livre)</td><td>migração 0050</td></tr>
+    <tr><td>Checkout</td><td>Editor próprio, entrega automática (link assinado), pixel Meta/TikTok só com aceite de cookies, UTMify, modo de teste</td><td><code>modules/checkout</code></td></tr>
+    <tr><td>Páginas</td><td>Blocos, botões livres, estilos, prévia celular/computador, métricas, Mini App</td><td><code>modules/pages</code></td></tr>
+    <tr><td>Baixar mídias</td><td>Instagram, Facebook, X e TikTok (<b>Telegram não</b>); 20 links por lote; vídeo até 20 min e 200 MB; só conteúdo público</td><td><code>services/midias</code></td></tr>
+    <tr><td>Marca d'água</td><td>Logo PNG ou texto; 9 posições ou mosaico; opacidade 5–100%; tamanho, margem, cor; imagem até 20 MB, 50 por lote, ZIP até 50 MB</td><td><code>services/midias/app/marca.py</code></td></tr>
+    <tr><td>Valor das Ferramentas</td><td>Configurável no Admin (cota diária e preço do lote). <b>Não escreva valores</b></td><td><code>ferramentas/servico.ts</code></td></tr>
+    <tr><td>Segurança</td><td>Tokens e chaves guardados cifrados e mostrados só mascarados; 2FA; permissões de equipe</td><td>API</td></tr>
+    <tr><td>Corrida (níveis)</td><td>10K, 100K, 500K, 1M — <b>sem 50K</b> (os prêmios da land têm 50K)</td><td>Corrida</td></tr>
+    <tr><td>Suporte inteligente (IA)</td><td><b>Não existe</b> → "em breve"</td><td>—</td></tr>
+    <tr><td>Área de membros</td><td><b>Em desenvolvimento</b></td><td>—</td></tr>
+    <tr><td>Regras dos prêmios</td><td><b>O dono ainda não passou</b> → "em breve"</td><td>—</td></tr>
+  </table>
+  <p>Se a taxa mudar: procure <code>0,75</code> no <code>index.html</code> e troque em todos os lugares (faixa de fatos, destaques, seção Preço, exemplo de R$ 29,90 → "Para você", nota do SyncPay, pergunta "Quanto custa?", <code>og:description</code>).</p>
+</section>
+
+<section class="quebra">
+  <p class="parte">Parte 11</p>
+  <h2>Demonstrações e "em breve"</h2>
+  <table>
+    <tr><th>Na página</th><th>É</th><th>Como está sinalizado</th></tr>
+    <tr><td>Compra com PIX</td><td>demonstração</td><td>faixa laranja no topo do celular ("Simulação: o PIX desta página não é real e nada é cobrado", como o modo de teste do Checkout real), QR apagado com "DEMONSTRAÇÃO", selo "PIX de demonstração · não pague", "Pagamento aprovado · simulação", rodapé dizendo que nada é gerado nem cobrado</td></tr>
+    <tr><td>Conversa do Telegram</td><td>exemplo</td><td>"Conversa de exemplo. Planos e valores são fictícios."</td></tr>
+    <tr><td>Baixar mídias (janela de etapas)</td><td>demonstração</td><td>selo e "Na plataforma, o ZIP baixa aqui"; abaixo, a tela real com a legenda "a janela acima só ilustra"</td></tr>
+    <tr><td>Assistente</td><td>exemplo de algo que ainda não existe</td><td>selo "em breve", "Demonstração · respostas de exemplo", "Nada aqui é enviado"</td></tr>
+    <tr><td>Antes/depois da marca d'água</td><td>ilustração: foto de produto criada para a land, marca aplicada por script</td><td>"A mesma foto nos dois lados: só muda a marca aplicada. Foto de produto criada para esta demonstração, com uma loja fictícia."</td></tr>
+    <tr><td>Capturas do painel</td><td>telas reais, conta de demonstração</td><td>legenda "Telas reais do painel, numa conta de demonstração"</td></tr>
+    <tr><td>Fotos dos prêmios</td><td>imagens ilustrativas</td><td>"Fotos ilustrativas dos prêmios. Nenhum nome de quem já recebeu aparece"</td></tr>
+    <tr><td>Área de membros, Suporte inteligente, Regras dos prêmios</td><td>não existe ainda</td><td>"Em desenvolvimento" / "Em breve"</td></tr>
+  </table>
+</section>
+
+<section class="quebra">
+  <p class="parte">Parte 12</p>
+  <h2>Regras para não quebrar</h2>
+  <ol class="armadilhas">
+    <li><b>Só PIX, em reais.</b> Nada de cartão, boleto, moeda estrangeira, países ou "pagamentos globais", nem em imagem.</li>
+    <li><b>Nada inventado.</b> Sem números de clientes, faturamento, estabilidade, depoimentos, ganhadores, selos ou logos de parceiros sem prova. Valores das capturas são dados de exemplo.</li>
+    <li><b>Toda promessa confere com o sistema</b> (Parte 10). Função que não existe = "em breve".</li>
+    <li><b>Preço é decisão do dono.</b> Sem "grátis", desconto ou prazo sem ele pedir. Valores das Ferramentas não vão na página.</li>
+    <li><b>Nada de nome real em imagem.</b> Captura nova só de conta de demonstração; olhe a imagem inteira (saudação, canto do perfil, conversas, nomes de clientes).</li>
+    <li><b>Imagem nova com nome novo</b> (cache de 30 dias).</li>
+    <li><b>Estilo novo com classe própria</b> e cores por variável. Seletores largos (ex.: <code>.proof-item span</code>) já quebraram a página uma vez.</li>
+    <li><b>Grade de uma coluna com <code>minmax(0, 1fr)</code></b>, nunca <code>1fr</code> sozinho.</li>
+    <li><b>Sem <code>backdrop-filter</code> no cabeçalho.</b></li>
+    <li><b>Acessibilidade:</b> foco visível, <code>alt</code> nas imagens com conteúdo (<code>alt=""</code> nas decorativas), contraste de pelo menos 4,5:1 no texto pequeno, botões de verdade (<code>&lt;button&gt;</code>), rótulos nos grupos.</li>
+    <li><b>Menos movimento</b> respeitado em toda animação nova (<code>prefers-reduced-motion</code>).</li>
+    <li><b>Leveza:</b> imagens abaixo da dobra com <code>loading="lazy"</code>; celular com imagens menores (<code>srcset</code>/<code>&lt;picture&gt;</code>); nada de vídeo tocando sozinho.</li>
+    <li><b>Prévia do link:</b> se o endereço da land mudar, troque <code>og:url</code> e <code>og:image</code>; para testar uma prévia nova no WhatsApp, mande o link com <code>?v=2</code>.</li>
+    <li><b>Sem serviço de fora</b> sem o dono pedir.</li>
+  </ol>
+</section>
+
+<section class="quebra">
+  <p class="parte">Parte 13</p>
+  <h2>Testes</h2>
+<pre>cd public &amp;&amp; python3 -m http.server 8090            # serve a página
+# em outro terminal, na raiz do projeto:
+node ferramentas/testes/matriz.mjs http://localhost:8090/       # 24 de 24 OK
+node ferramentas/testes/interacao.mjs http://localhost:8090/    # 53 passaram (2 vezes)
+node ferramentas/testes/foto.mjs http://localhost:8090/ depois 1440,390          # escuro
+node ferramentas/testes/foto.mjs http://localhost:8090/ depois-claro 1440,390 claro
+node ferramentas/testes/secao.mjs http://localhost:8090/ '#premiacao' premio 1440,390</pre>
+  <p>Precisam do Node e do Playwright com o Chromium. Mais em <code>ferramentas/testes/LEIA-ME.md</code>.</p>
+  <table>
+    <tr><th>Teste</th><th>O que confere</th></tr>
+    <tr><td><code>matriz.mjs</code></td><td>320, 360, 375, 390, 430, 768, 870, 1024, 1151, 1440 px e celular deitado (844×390, 932×430), escuro e claro: <code>scrollWidth</code> igual à tela, nenhuma imagem quebrada, nenhum erro no console.</td></tr>
+    <tr><td><code>interacao.mjs</code></td><td>âncoras do menu; tema liga, fica salvo e volta; Universo (órbitas e abas); vitrine aba 04; demonstração do PIX (etapas, aviso, valor, cartão "Pagamento aprovado" só depois e some ao recomeçar); antes/depois pelo teclado; Logo/Texto; baixar mídias até "Pronto"; filtro e abertura das perguntas; assistente; links externos só para o painel; menu do celular abre, leva à seção e fecha; menu claro cobre a tela; setas dos prêmios; 6 cartões do topo e 6 soluções com destino válido; ilhas escuras no tema claro; menos movimento (planeta parado, demonstração sem espera); foco visível no primeiro Tab. <b>Desde 28/10, mais 17</b> (começam com "v3"): ordem com a Premiação em 3º, seções e microtítulos removidos, 6 cartões de Recursos mantidos, nenhum travessão no meio de frase, "direto no seu gateway", "Receba diretamente no seu gateway", produto escolhido aparece no celular, PIX sem código falso e com aviso, abas da vitrine ligadas ao painel, tarja "Fluxo de exemplo", antes/depois da mesma foto, 8 mensagens = 8 pausas, conversa inteira com menos movimento, faixa de fatos inteira em 320 e 390 px.</td></tr>
+  </table>
+  <h3>Outras conferências da última entrega</h3>
+  <ul>
+    <li><b>Lighthouse em 28/10</b> (Chromium, servidor simples do Python, sem compressão; antes e depois no mesmo servidor): celular velocidade 90 → 90, acessibilidade 100, boas práticas 100, SEO 100; computador velocidade 99 → 99, acessibilidade <b>95 → 100</b> (o aviso herdado da vitrine saiu). Em 27/10, contra o Nginx: celular 92–96, computador 100.</li>
+    <li><b>Prova dos testes novos:</b> rodados contra a versão anterior (v2), os 12 testes que conferem as correções reprovam e os 36 antigos passam; contra a v3, 53 de 53.</li>
+    <li><b>html-validate (27/10):</b> sem erros de estrutura; sobram avisos de rótulo (<code>aria-label</code>) em listas e em 4 blocos da versão original — permitido pelas regras de acessibilidade, só o validador é mais rígido.</li>
+    <li><b>Nginx:</b> a mesma <code>nginx.conf</code> rodada localmente: <code>/health</code> "ok", imagens com o tipo certo, cache de 30 dias em <code>/assets/</code>, página comprimida (~200 KB viram ~35 KB).</li>
+  </ul>
+  <div class="caixa paga"><b>Armadilha já paga · teste olhando cedo demais</b><p>Em 27/10 um teste falhou porque conferia o cartão "Pagamento aprovado" antes do fim da animação de 0,3 s. A página estava certa: o teste passou a esperar a animação. Antes de mexer num teste, prove onde está o defeito.</p></div>
+</section>
+
+<section class="quebra">
+  <p class="parte">Parte 14</p>
+  <h2>Publicar e voltar atrás</h2>
+  <ol>
+    <li>Confirme que a atualização da plataforma correspondente já está no ar (Parte 2).</li>
+    <li>Envie a pasta para o repositório Git da land (no Mac, o <code>subir-projeto.command</code> faz isso).</li>
+    <li>No Coolify, abra o recurso da land e faça o deploy: build por Dockerfile, porta 80. Nada de variável, banco ou volume.</li>
+    <li>Abra a land no celular e no computador, troque o tema, clique em "Criar conta" e confira que cai no cadastro do painel.</li>
+  </ol>
+  <p>Container igual ao do ar, para testar antes: <code>docker build -t nucleo-landing .</code> e <code>docker run --rm -p 8080:80 nucleo-landing</code>, depois <code>http://localhost:8080</code> e <code>/health</code>.</p>
+  <p><b>Voltar atrás:</b> faça o deploy da versão anterior no Coolify. A land não guarda dado nenhum, então voltar é sempre seguro. Quem visitou pode ver imagens antigas por cache só se algum nome de imagem tiver sido reaproveitado — por isso a regra do nome novo.</p>
+</section>
+
+<section class="quebra">
+  <p class="parte">Parte 15 · leia antes de entregar</p>
+  <h2>Armadilhas já pagas</h2>
+  <ol class="armadilhas">
+    <li><b><code>backdrop-filter</code> no cabeçalho</b> fez o menu do celular (que é <code>position: fixed</code>) ficar preso dentro do cabeçalho: no tema claro o menu abria transparente, com a página por trás. Hoje o cabeçalho claro tem fundo sólido.</li>
+    <li><b>Cores fixas</b> deixaram texto ilegível no tema claro (Parte 8).</li>
+    <li><b>Grade com <code>1fr</code></b> deixou a seção Baixar mídias com 386 px de largura em telas de 320–375 px (o conteúdo mínimo empurra a coluna). Solução: <code>minmax(0, 1fr)</code>.</li>
+    <li><b>Margem negativa</b> na galeria de prêmios fez a página sobrar 6 px para o lado em 390 px.</li>
+    <li><b>Menu sobrando entre 861 e 1320 px</b> depois de acrescentar itens e o botão de tema: a faixa do <code>hide-md</code> foi ampliada até 1320 px e o espaçamento diminui entre 861 e 960 px.</li>
+    <li><b>Captura sem rolar</b> mostra blocos <code>.reveal</code> invisíveis e imagens <code>lazy</code> vazias. Os scripts rolam a página antes.</li>
+    <li><b>Céu esticado no celular:</b> a imagem larga, cobrindo um topo alto, ficava borrada. O celular usa um céu em pé (<code>&lt;picture&gt;</code>).</li>
+    <li><b>Velocidade no celular</b> caiu de 98 para 84 quando o planeta grande (1100 px) era decodificado no celular; com o de 640 px voltou para 92–96.</li>
+    <li><b>Cartão "Operação ativa" esticado:</b> trocar <code>position</code> de um elemento que era <code>absolute</code> mudou o desenho do original. Para mudar a camada, use só <code>z-index</code>.</li>
+    <li><b>Planeta da arte com quadrado em volta</b> e anéis cortados: o brilho precisa terminar antes da borda da imagem, e o planeta não pode ocupar o quadro inteiro.</li>
+    <li><b>"Grátis" escrito sem o dono pedir</b> (era verdade no sistema, mas o guia proíbe). Hoje: "entra na cota diária".</li>
+    <li><b>Higgsfield no plano gratuito</b> recusa toda geração de imagem ("Requires basic plan or higher") sem gastar crédito.</li>
+    <li><b><code>pkill -f</code> com padrão amplo</b> derruba o próprio comando (código 144). Pare servidores pelo número do processo.</li>
+    <li><b>Captura de seção alta com rolagem rápida</b> deixou blocos <code>.reveal</code> invisíveis no meio da imagem (o bloco passou pela tela sem ser visto). Na página real eles aparecem; para capturas, use "menos movimento" (o <code>foto.mjs</code> já usa).</li>
+    <li><b>Mensagem nova na conversa do Telegram</b> sem pausa nova deixa o tempo errado: <code>pausas</code> tem de ter uma entrada por filho de <code>#tg-chat</code> (há teste).</li>
+    <li><b>O "—" sozinho</b> no status vazio de Baixar mídias não é travessão de frase. O teste de travessão só olha o meio das frases.</li>
+  </ol>
+</section>
+
+<section class="quebra">
+  <p class="parte">Parte 16</p>
+  <h2>Receitas para as mudanças mais comuns</h2>
+  <h3>Trocar um texto</h3>
+  <p>Procure a frase no <code>index.html</code> e troque. Se o texto é uma promessa (Parte 10), confira no código da plataforma. Se aparece em mais de um lugar (taxa, limites), troque em todos.</p>
+  <h3>Acrescentar uma pergunta</h3>
+  <p>Copie um <code>&lt;article class="faq-item" data-faq="…"&gt;</code> inteiro dentro de <code>.faq-list</code>, troque pergunta e resposta e escolha o assunto (<code>funciona</code>, <code>pagamentos</code>, <code>ferramentas</code>, <code>seguranca</code>).</p>
+  <h3>Acrescentar uma novidade</h3>
+  <p>Em <code>#novidades</code>, copie um <code>&lt;li&gt;</code> com <code>&lt;time datetime="AAAA-MM-DD"&gt;</code>, a mais nova em cima. Só o que já está no ar.</p>
+  <h3>Trocar uma captura do painel</h3>
+  <p>Tire de uma conta de demonstração, sem nome real, converta para WebP, salve com nome novo e troque no HTML (e no <code>showcaseData</code>, se for da vitrine). Se a tela nova não tiver nome real, apague as tarjas <code>shot-mask</code> daquela imagem.</p>
+  <h3>Acrescentar um gateway ou integração</h3>
+  <p>Logo quadrado em <code>assets/logo-&lt;nome&gt;.png</code>, um cartão novo em <code>#integracoes</code>, e atualize os textos que citam "Dotfy ou SyncPay" (integrações, perguntas e preço). O topo, a faixa de fatos e o Checkout falam "seu gateway" desde 28/10, então não precisam mudar.</p>
+  <h3>Lançou algo que estava "em breve"</h3>
+  <p>Tire o selo "Em breve", troque o texto de exemplo pelo real, tire a palavra "Demonstração" só se a parte deixar de ser simulada, e mova o item de "No forno" para a lista de novidades.</p>
+  <h3>Mudar o endereço do painel ou da land</h3>
+  <p>Painel: procure <code>app.nucleobot.com.br</code> e troque todos. Land: troque <code>og:url</code> e <code>og:image</code> e refaça <code>compartilhar.png</code>.</p>
+</section>
+
+<section class="quebra">
+  <p class="parte">Parte 17</p>
+  <h2>Estado atual e o que falta</h2>
+  <h3>Estado</h3>
+  <ul>
+    <li><b>lannucleo-28-10-v3</b> (v2 + as 13 correções de 28/10) pronta e testada, <b>ainda não publicada</b>. Publicar depois da plataforma (0050/0051).</li>
+    <li>Última conferência (28/10): 53 de 53 nos cliques (duas rodadas), 24 de 24 tamanhos/temas, Lighthouse (Parte 13). O Nginx não foi rodado de novo (não mudou).</li>
+  </ul>
+  <h3>Decisões do dono</h3>
+  <ol>
+    <li>Regras de elegibilidade e envio dos prêmios (hoje "em breve").</li>
+    <li>Prêmio de 50K: a land tem, a Corrida da plataforma não.</li>
+    <li>Canal de atendimento humano (o suporte inteligente ainda não existe).</li>
+    <li>Usar ou não a palavra "grátis" nas Ferramentas.</li>
+    <li>Trocar a arte renderizada por arte do Higgsfield (precisa de plano pago).</li>
+  </ol>
+  <h3>Ajustes técnicos conhecidos</h3>
+  <ul>
+    <li>Não há <code>robots.txt</code> (o Lighthouse tira pontos de SEO). Criar um simples é fácil, mas confirme com o dono antes.</li>
+    <li>Ainda há microtítulos em roxo (ex.: "Páginas inteligentes", "Ferramentas · Marca d'água", "Soluções", "Premiação") e a linha "Tudo em um só lugar" no topo. Em 28/10 só saíram os que o dono pediu; tirar os outros é decisão dele.</li>
+    <li>Não existe captura escura do editor de fluxos: a página usa a clara, recortada, numa janela escura.</li>
+    <li>O celular de prévia <b>dentro</b> da captura do editor de Páginas mostra o título meio coberto pelo recorte da câmera; isso é da tela real do painel e não foi retocado.</li>
+    <li><code>nucleo-core.webp</code> e <code>nucleo-mascot.webp</code> não são usadas.</li>
+    <li>Ainda não existe Política de Privacidade no painel; quando existir, o link entra no rodapé, ao lado de "Termos de uso".</li>
+  </ul>
+</section>
+
+<section class="quebra">
+  <p class="parte">Parte 18</p>
+  <h2>Histórico</h2>
+  <table>
+    <tr><th>Data</th><th>O que mudou</th></tr>
+    <tr><td>28/10/2026 (v3)</td><td>13 correções: topo sem microfrase, parágrafo sem travessão e "Só PIX · direto no seu gateway"; sem microtítulo no Universo, Telegram, vitrine, editor e Checkout; saíram as etapas, a faixa de números, a grade de 12 recursos e o "N."; celular do Telegram refeito; vitrine com abas em linha e tela maior; editor de fluxos com captura larga numa janela escura e o nome do fluxo coberto; Checkout no formato da página de compra real; celular das Páginas com moldura de aparelho; marca d'água com foto de produto (mesma foto antes e depois); faixa de fatos do celular em lista; Premiação como 3ª seção e menu na ordem da página; nenhum travessão no meio de frase. 17 testes novos.</td></tr>
+    <tr><td>27/10/2026 (2)</td><td>Visual da referência: topo com planeta, anéis e cartões das funções, faixa de fatos, prêmios em escadinha, cartões ilustrados "Muito mais que um bot", Checkout num celular sobre a borda de um planeta, planeta no Universo, estrelas nas seções escuras. Arte renderizada por <code>ferramentas/arte.py</code>. Testes passaram a morar em <code>ferramentas/testes</code>. Removido CSS do planeta de linhas que não era mais usado.</td></tr>
+    <tr><td>27/10/2026</td><td>Seções novas (Universo, Checkout PIX com demonstração, Páginas, Marca d'água, Baixar mídias, Premiação, Novidades, Suporte em breve), aba 04 na vitrine, 3 recursos, UTMify, perguntas por assunto (+6), tema claro, menu novo.</td></tr>
+    <tr><td>29/09/2026</td><td>Seção Preço, "Quanto custa?", botões para o cadastro, conversa do Telegram, SyncPay, Inter local, prévia do link, ícone do iPhone; vitrine com 3 abas.</td></tr>
+    <tr><td>21/09/2026</td><td>Primeira versão da land.</td></tr>
+  </table>
+</section>
+
+<section class="quebra">
+  <p class="parte">Parte 19 · checklist</p>
+  <h2>Os primeiros 30 minutos de quem assume</h2>
+  <ol>
+    <li>Leia o <code>GUIA-DA-LAND.md</code>, o <code>README.md</code> e este manual. Não proponha nada antes.</li>
+    <li>Sirva a pasta <code>public</code> e abra a página no computador e no celular, nos dois temas.</li>
+    <li>Rode <code>matriz.mjs</code> e <code>interacao.mjs</code> (duas vezes). Confirme <b>24 de 24</b> e <b>53 de 53</b>.</li>
+    <li>Tire as capturas do "antes" com o <code>foto.mjs</code> — você vai precisar delas na entrega.</li>
+    <li>Leia a Parte 10 inteira se o pedido mexer em qualquer texto sobre a plataforma.</li>
+    <li>Só então diga ao dono o que entendeu, o estado atual e se os testes passaram, e pergunte o que ele quer mudar.</li>
+  </ol>
+  <h3>O que colar no primeiro dia de um chat novo</h3>
+  <ol>
+    <li>o zip da land (<code>lannucleo-28-10-v3.zip</code> ou o mais recente);</li>
+    <li>este manual em PDF;</li>
+    <li>o texto do <b>Anexo A</b> (também em <code>docs/prompt-continuidade-land.md</code>) — cole como a mensagem;</li>
+    <li>se o pedido mexer em preço, limites ou funções da plataforma, o zip da plataforma.</li>
+  </ol>
+  <p>Se o chat for para uma mudança específica, troque o "COMECE ASSIM" do prompt pela mudança. O resto é o que evita erro.</p>
+  <p class="nota">Este manual foi escrito conferindo o zip lannucleo-27-10-v2 e o código da plataforma em 27/10/2026, e atualizado em 28/10/2026 com as 13 correções (zip lannucleo-28-10-v3). Onde ele divergir do código, o código está certo, e a divergência merece uma correção aqui.</p>
+</section>
+
+<section class="quebra anexo">
+  <p class="parte">Anexo A</p>
+  <h2>Prompt completo para o chat novo</h2>
+  <p>Copie tudo o que está dentro do quadro e cole como primeira mensagem, junto com os arquivos.</p>
+  <pre class="prompt">{{PROMPT}}</pre>
+</section>

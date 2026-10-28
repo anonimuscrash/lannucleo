@@ -1,0 +1,14 @@
+
+# --- adicionado pelo script de envio ---
+node_modules/
+.next/
+dist/
+build/
+out/
+.env
+.env.*
+!.env.example
+*.log
+.DS_Store
+.vercel
+coverage/

@@ -1,0 +1,9 @@
+services:
+  nucleo-landing:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    expose:
+      - "80"
+
